@@ -67,7 +67,7 @@ RUN pip install -r ./requirements
 # copy project
 COPY . .
 
-EXPOSE 8080
+EXPOSE 8000
 
 USER 1001
 
