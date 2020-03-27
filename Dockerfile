@@ -42,6 +42,8 @@ RUN INSTALL_PKGS="rh-python36 rh-python36-python-devel rh-python36-python-setupt
     rpm -e --nodeps centos-logos && \
     yum -y clean all --enablerepo='*'
 
+# copy project
+COPY . .
 
 # - Create a Python virtual environment for use by any application to avoid
 #   potential conflicts with Python packages preinstalled in the main Python
@@ -55,21 +57,12 @@ RUN source scl_source enable rh-python36 && \
     fix-permissions ${APP_ROOT} -P && \
     rpm-file-permissions
 
-# RUN pip install psycopg2
-
-COPY ./requirements.txt ./requirements
-
-
-RUN pip install --upgrade pip
-
-RUN pip install -r ./requirements
-
-# copy project
-COPY . .
+USER 1001
+RUN pip install --upgrade pip && \
+    pip install -r ./requirements.txt
 
 EXPOSE 8000
 
-USER 1001
-
 # run docker-entrypoint.sh
 ENTRYPOINT ["./start-django.sh"]
+#CMD ["gunicorn", "--bind", "0.0.0.0:8000", "wsgi:application"]
