@@ -1,6 +1,6 @@
 # This image provides a Python 3.6 environment you can use to run your Python
 # applications.
-FROM centos/s2i-base-centos7
+FROM registry.redhat.io/rhscl/python-36-rhel7
 
 
 ENV PATH=$HOME/.local/bin/:$PATH \
@@ -30,14 +30,16 @@ LABEL summary="$SUMMARY" \
       usage="s2i build https://github.com/sclorg/s2i-python-container.git --context-dir=3.6/test/setup-test-app/ centos/python-36-centos7 python-sample-app" \
       maintainer="SoftwareCollections.org <sclorg@redhat.com>"
 
+USER root
+
 RUN INSTALL_PKGS="rh-python36 rh-python36-python-devel rh-python36-python-setuptools rh-python36-python-pip nss_wrapper \
         httpd24 httpd24-httpd-devel httpd24-mod_ssl httpd24-mod_auth_kerb httpd24-mod_ldap \
         httpd24-mod_session atlas-devel gcc-gfortran libffi-devel libtool-ltdl enchant" && \
-    yum install -y centos-release-scl && \
-    yum -y --setopt=tsflags=nodocs install --enablerepo=centosplus $INSTALL_PKGS && \
+    # yum install -y centos-release-scl && \
+    # yum -y --setopt=tsflags=nodocs install --enablerepo=centosplus $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     # Remove centos-logos (httpd dependency) to keep image size smaller.
-    rpm -e --nodeps centos-logos && \
+    # rpm -e --nodeps centos-logos && \
     yum -y clean all --enablerepo='*'
 
 # copy project
