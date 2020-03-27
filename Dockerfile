@@ -50,6 +50,7 @@ COPY . .
 #   writable as OpenShift default security model is to run the container
 #   under random UID.
 RUN source scl_source enable rh-python36 && \
+    echo ${APP_ROOT} && \
     virtualenv ${APP_ROOT} && \
     chown -R 1001:0 ${APP_ROOT} && \
     fix-permissions ${APP_ROOT} -P && \
