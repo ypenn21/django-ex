@@ -58,7 +58,10 @@ RUN source scl_source enable rh-python36 && \
 
 USER 1001
 RUN pip install --upgrade pip && \
-    pip install -r ./requirements.txt
+    pip install -r ./requirements.txt && \
+    pip install -U appdynamics==4.3.9.0
+    #pip install ipython pyzmq tornado && \
+    #    pip install appdynamics-bindeps-linux-x64 appdynamics-proxysupport-linux-x64
 
 EXPOSE 8000
 
